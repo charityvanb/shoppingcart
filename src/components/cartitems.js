@@ -2,15 +2,13 @@ import React from 'react';
 import CartItem from './cartitem.js';
 
 const CartItems = (props) => {
-    console.log("props in cartitems", props.cartItemsList)
      var cartItemsDiv = props.cartItemsList.map(cartitem => {
-        console.log("cartitem", cartitem) 
         return (
              <CartItem
                 key={cartitem.id}
                 name={cartitem.product.name}
                 quantity={cartitem.quantity}
-                price={cartitem.product.priceInCents} />
+                price={'$' + parseFloat(cartitem.product.priceInCents/100)} />
          )
      })
 
@@ -27,6 +25,7 @@ const CartItems = (props) => {
             </div>
             {cartItemsDiv}
         </div>
+        <div className="Total">Total: {props.total}</div>
         </div>
     
     )

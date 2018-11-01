@@ -5,8 +5,8 @@ import CartItems from './components/cartitems.js'
 import InputForms from './components/forms.js'
 
 class App extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
             cartItemsList: [
                 { id: 1, product: { id: 40, name: 'Mediocre Iron Watch', priceInCents: 399 }, quantity: 1 },
@@ -23,12 +23,36 @@ class App extends Component {
                 { id: 46, name: 'Intelligent Leather Clock', priceInCents: 2999 },
                 { id: 47, name: 'Ergonomic Bronze Lamp', priceInCents: 40000 },
                 { id: 48, name: 'Awesome Leather Shoes', priceInCents: 3990 },
-              ]
+              ],
+              name: '',
+              quantity: 0,
+              total: 0
         }
     }
 
-    onSubmit() {
-console.log("There")
+    onSubmit = (e) => {
+        e.preventDefault();
+        var selectedItem = this.state.products.filter (
+            (p) => {
+                if (p.name === this.state.name){
+                    return p.priceInCents
+                        }
+                    }
+                    
+        )
+        let newItem = { 
+            id: this.state.cartItemsList.length + 1, 
+            product: selectedItem[0], 
+            quantity: this.state.quantity
+        }
+        this.setState({
+            cartItemsList: this.state.cartItemsList.concat(newItem),
+            total: '$' + parseFloat(this.state.total + this.state.quantity * selectedItem[0].priceInCents/100)
+        })
+    }
+  
+    onChange = (e) => {
+        this.setState({[e.target.name]: e.target.value})
     }
 
     render() {
@@ -37,8 +61,8 @@ console.log("There")
     return (
         <>
         <CartHeader />
-        <CartItems cartItemsList={this.state.cartItemsList}/>
-        <InputForms products={this.state.products} onSubmit={this.onSubmit}/>
+        <CartItems cartItemsList={this.state.cartItemsList} total={this.state.total}/>
+        <InputForms products={this.state.products} onSubmit={this.onSubmit} onChange={this.onChange}/>
         <CartFooter copyright={copyright}/>
         </>
     )
